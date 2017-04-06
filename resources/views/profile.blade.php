@@ -1,15 +1,34 @@
 @extends('layouts.app')
 
 @section('title')
-My Posts
+Profile
 @endsection
 
 @section('content')
 <section class="section">
     <div class="container">
-        <div class="column is-half is-offset-one-quarter">
-              @include ('partials.flash')
-              @foreach ($posts as $post) 
+      <div class="column is-half is-offset-one-quarter">
+        <article class="message is-info">
+          <div class="message-body">
+            <div class="columns">
+              <div class="column">
+                <h1 class="title"><strong>{{ $user->name }}</strong></h1>
+                <small>{{ $user->email }}</small>
+                <small>Member since: {{ $user->created_at->month }}/{{ $user->created_at->year }}</small>
+              </div>
+              <div class="column">
+
+              </div>
+              <div class="column">
+                
+              </div>
+              <div class="column">
+
+              </div>
+            </div>
+          </div>
+        </article>
+        @foreach ($posts as $post) 
                 <article class="message">
                   <div class="message-body">
                     <h1 class="title is-4"><strong>{{ $post->title }}</strong></h1>
@@ -19,7 +38,7 @@ My Posts
                     </p>
                     <p class="control">
                       <br>
-                      - <a class="is-primary" href="{{ route('profile.show', $post->user->name) }}">{{ $post->user->name }}</a>
+                      - {{ $post->user->name }}
                     </p>
                     @if ($post->user_id == Auth::user()->id)
                       <br><br>
@@ -41,7 +60,7 @@ My Posts
                   @endif
                 </article>
             @endforeach
-        </div>
+      </div>
     </div>
 </section>
 @endsection

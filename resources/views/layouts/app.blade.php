@@ -25,7 +25,7 @@
     <nav class="nav has-shadow">
       <div class="container">
         <div class="nav-left">
-          <a class="nav-item" href="{{ route('home') }}">
+          <a class="nav-item" href="{{ route('posts.index') }}">
             <h1 class="title is-4"><strong>BLOGGR</strong></h1>
           </a>
         </div>
@@ -36,11 +36,11 @@
         </div>
         <div class="nav-right">
           @if (Auth::check())
-            <a class="nav-item" href="{{ route('posts') }}">
-              Posts
-            </a>
-            <a class="nav-item" href="{{ route('create') }}">
+            <a class="nav-item" href="{{ route('posts.create') }}">
               Create
+            </a>
+            <a class="nav-item" href="{{ route('profile.index') }}">
+              Profile
             </a>
             <a class="nav-item">
               <form method="POST" action="{{ route('logout') }}">

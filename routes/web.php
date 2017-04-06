@@ -11,16 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'PostController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('posts', 'PostController');
+Route::resource('profile', 'ProfileController');
 
-Route::post('/create', 'PostController@publish')->name('create');
 
-Route::get('/create', 'PostController@create');
-
-Route::get('/posts', 'PostController@retrieve')->name('posts');
