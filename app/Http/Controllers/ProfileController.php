@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -24,6 +25,7 @@ class ProfileController extends Controller
         return view('profile', [
         	'user' => Auth::user(),
         	'posts' => Auth::user()->posts->sortByDesc('updated_at'),
+            'comments' => Comment::all()->sortByDesc('updated_at'),
         ]);
     }
 
@@ -38,6 +40,7 @@ class ProfileController extends Controller
         return view('profile', [
         	'user' => $user,
         	'posts' => $user->posts->sortByDesc('updated_at'),
+            'comments' => Comment::all()->sortByDesc('updated_at'),
         ]);
     }
 

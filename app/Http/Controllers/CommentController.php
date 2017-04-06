@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use App\Comment;
-use Auth;
+use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class CommentController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,7 +18,6 @@ class PostController extends Controller
     {
         return view('posts', [
             'posts' => Post::all()->sortByDesc('updated_at'),
-            'comments' => Comment::all()->sortByDesc('created_at'),
         ]);
     }
 
@@ -44,17 +38,17 @@ class PostController extends Controller
         dd($post->toArray());
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
         $user = Auth::user();
-        $post = new Post([
-            'title' => $request->input('title'), 
-            'body' => $request->input('body'), 
+        $comment = new Comment([
+            'post_id' => $post->id, 
+            'message' => $request->input('message'), 
             'user_id' => $user->id
         ]);
-        $post->save();
+        $comment->save();
 
-        flash()->success('Post created successfully.');
+        flash()->success('Comment created successfully.');
 
         return redirect()->route('posts.index');
     }
@@ -68,11 +62,11 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    public function destroy(Post $post)
+    public function destroy(Comment $comment)
     {
-        $post->delete();
+        $comment->delete();
 
-        flash()->success('"' . $post->title . '" success deleted.');
+        flash()->success('Your comment was successfully deleted.');
 
         return redirect()->route('posts.index');
     }
