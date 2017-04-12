@@ -42,8 +42,8 @@ class CommentController extends Controller
     {
         $user = Auth::user();
         $comment = new Comment([
-            'post_id' => $post->id, 
-            'message' => $request->input('message'), 
+            'post_id' => $post->id,
+            'message' => $request->input('message'),
             'user_id' => $user->id
         ]);
         $comment->save();
@@ -68,6 +68,6 @@ class CommentController extends Controller
 
         flash()->success('Your comment was successfully deleted.');
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.show', Post::find($comment->post_id));
     }
 }

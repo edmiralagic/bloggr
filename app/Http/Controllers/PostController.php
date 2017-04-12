@@ -34,22 +34,29 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        return view('editpost', [
-            'post' => $post,
-        ]);
+        if($post->user_id == Auth::user()->id) {
+            return view('editpost', [
+                'post' => $post,
+            ]);
+        } else {
+            return redirect()->route('posts.index');
+        }
     }
 
     public function show(Post $post)
     {
-        dd($post->toArray());
+        return view('showpost', [
+                'post' => $post,
+                'comments' => Comment::all()->sortByDesc('created_at'),
+            ]);
     }
 
     public function store(Request $request)
     {
         $user = Auth::user();
         $post = new Post([
-            'title' => $request->input('title'), 
-            'body' => $request->input('body'), 
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
             'user_id' => $user->id
         ]);
         $post->save();
@@ -61,19 +68,27 @@ class PostController extends Controller
 
     public function update(Post $post, Request $request)
     {
-        $post->title = $request->input('title');
-        $post->body = $request->input('body');
-        $post->save();
+        if($post->user_id == Auth::user()->id) {
+            $post->title = $request->input('title');
+            $post->body = $request->input('body');
+            $post->save();
 
-        return redirect()->route('posts.index');
+            return redirect()->route('posts.show', $post);
+        } else {
+            return redirect()->route('posts.index');
+        }
     }
 
     public function destroy(Post $post)
     {
-        $post->delete();
+        if($post->user_id == Auth::user()->id) {
+            $post->delete();
 
-        flash()->success('"' . $post->title . '" success deleted.');
+            flash()->success('"' . $post->title . '" success deleted.');
 
-        return redirect()->route('posts.index');
+            return redirect()->route('posts.index');
+        } else {
+            return redirect()->route('posts.index');
+        }
     }
 }
